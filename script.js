@@ -3,19 +3,13 @@
 const btn = document.querySelector('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
-const getCountryData = function (country) {
 
-    const request = new XMLHttpRequest();
-    request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
-    request.send();
+// https://restcountries.com/
 
-    request.addEventListener('load', function () {
-        const [data] = JSON.parse(this.responseText);
-        console.log(data); // use this to study the data you want to use
-
-        const languages = Object.values(data.languages);
-        const currencies = Object.values(data.currencies);
-        const html = `<article class="country">
+const renderCountry = function (data, className = '') {
+    const languages = Object.values(data.languages);
+    const currencies = Object.values(data.currencies);
+    const html = `<article class="country ${className}">
           <img class="country__img" src="${data.flags.svg}" />
           <div class="country__data">
             <h3 class="country__name">${data.name.official}</h3>
@@ -26,8 +20,44 @@ const getCountryData = function (country) {
           </div>
         </article>`;
 
-        countriesContainer.insertAdjacentHTML('beforeend', html);
-        countriesContainer.style.opacity = 1;
+    countriesContainer.insertAdjacentHTML('beforeend', html);
+    countriesContainer.style.opacity = 1;
+}
+
+
+const getCountryAndNeighbour = function (country) {
+
+    // AJAX call country 1
+
+    const request = new XMLHttpRequest();
+    request.open('GET', `https://restcountries.com/v3.1/name/${country}`);
+    request.send();
+
+    request.addEventListener('load', function () {
+        const [data] = JSON.parse(this.responseText);
+        console.log(data); // use this to study the data you want to use
+
+        // render country 1
+        renderCountry(data);
+
+        // Get neighbour country (2);
+        const neighbour = data.borders?.[1];
+        if (!neighbour) return;
+
+        // AJAX call country 2
+        const request2 = new XMLHttpRequest();
+
+        request2.open('GET', `https://restcountries.com/v3.1/alpha/${neighbour}`);
+        request2.send();
+
+        request2.addEventListener('load', function () {
+            const [data2] = JSON.parse(this.responseText);
+            console.log(data2);
+
+            renderCountry(data2, 'neighbour');
+        })
+
+
     });
 
 };
@@ -38,6 +68,8 @@ const getCountryData = function (country) {
 // getCountryData('san marino');
 // getCountryData('spain');
 
-getCountryData('lithuania');
-getCountryData('latvia');
-getCountryData('estonia');
+getCountryAndNeighbour('lithuania');
+
+
+
+

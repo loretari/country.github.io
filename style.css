@@ -37,8 +37,8 @@ body {
 }
 
 .country {
-    /* background-color: #fff; */
-    background-color: rgb(182, 177, 177);
+     background-color: #fff;
+    /*background-color: rgb(182, 177, 177);*/
     box-shadow: 0 2rem 5rem 1rem rgba(0, 0, 0, 0.1);
     font-size: 1.8rem;
     width: 30rem;
