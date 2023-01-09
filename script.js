@@ -41,8 +41,12 @@ const getCountryAndNeighbour = function (country) {
         renderCountry(data);
 
         // Get neighbour country (2);
-        const neighbour = data.borders?.[1];
-        if (!neighbour) return;
+        // const neighbour = data.borders?.[1];
+        const neighbours = data.borders;
+neighbours.forEach(neighbour => {
+
+
+        if (!neighbours) return;
 
         // AJAX call country 2
         const request2 = new XMLHttpRequest();
@@ -56,7 +60,7 @@ const getCountryAndNeighbour = function (country) {
 
             renderCountry(data2, 'neighbour');
         })
-
+})
 
     });
 
@@ -68,7 +72,11 @@ const getCountryAndNeighbour = function (country) {
 // getCountryData('san marino');
 // getCountryData('spain');
 
-getCountryAndNeighbour('lithuania');
+// getCountryAndNeighbour('lithuania');
+getCountryAndNeighbour('gibraltar');
+// getCountryAndNeighbour('italy');
+
+
 
 
 
