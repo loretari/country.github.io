@@ -26,8 +26,17 @@ const renderCountry = function (data, className = '') {
 
 
 const getCountryData = function (country) {
-    fetch(`https://restcountries.com/v3.1/name/${country}`).then(response => response.json()
-        .then(data => renderCountry(data[0])));
+    fetch(`https://restcountries.com/v3.1/name/${country}`)
+        .then(response => response.json())
+        .then(data => {
+            renderCountry(data[0]);
+            const neighbour = data[0].borders[2];
+            if (!neighbour) return;
+
+            return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`)
+        })
+        .then(response => response.json())
+        .then(data => renderCountry(data[0], 'neighbour'));
 
 
 };
